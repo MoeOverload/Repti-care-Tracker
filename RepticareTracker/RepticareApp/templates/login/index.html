@@ -1,0 +1,60 @@
+{%extends "layout.html"%}
+{%load static%}
+
+{%block title%}ReptiCare | Login{%endblock%}
+{%block head_extra%}
+    <link rel="stylesheet" href="{% static 'ReptiCareApp/css/login-toggle.css' %}">
+{%endblock%}
+
+{%block body%}
+    <br>
+    {% if message %}
+    <div>{{ message }}</div>
+    {% endif %}
+    <br>
+        <div class="login-form" id="login-form" >
+            <h1 style="text-align: center;">Login</h1>
+            <form action="{% url 'Login' %}" method="post">
+                {% csrf_token %}
+                
+                <div class="mb-3 mt-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                </div>
+                <div class="mb-3">
+                    <label for="pwd" class="form-label">Password:</label>
+                    <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd">
+                </div>
+                <button type="submit" class="btn btn-primary" value="Login">Log In</button>
+            </form> 
+            <button type="button" class="btn btn-link" id="show-signup">not a user? sign up!</button>
+        </div>
+
+        <div class="signup-form hidden" id="signup-form" >
+            <h1 style="text-align: center;">Sign Up</h1>
+            <form action="{% url 'signup'%}" method="post">
+                {%csrf_token%}
+                <div class="mb-3 mt-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="signup-email" placeholder="Enter email" name="email">
+                </div>
+                <div class="mb-3 mt-3">
+                    <label for="username" class="form-label">username:</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+                </div>
+                <div class="mb-3">
+                    <label for="pwd" class="form-label">Password:</label>
+                    <input type="password" class="form-control" id="signup-pwd" name="password1" placeholder="Enter password" >
+                </div>
+                <div class="mb-3">
+                    <label for="pwd" class="form-label">Re-enter Password:</label>
+                    <input type="password" class="form-control" id="re-enter-signup-pwd" name="password2"placeholder="Enter password" >
+                </div>
+                <button type="submit" class="btn btn-primary">Sign up</button>
+            </form>
+            <button type="button" class="btn btn-link"id="show-login">already a user? login!</button>
+        </div>
+    {%block scripts%}
+    <script src="{% static 'ReptiCareApp/js/login-toggle.js' %}"></script>
+    {%endblock%}
+{%endblock%}

@@ -1,0 +1,15 @@
+.hidden{
+    display: none;
+}
+.login-form{
+    margin: 2%;
+    padding: 2%;
+    border: 2px solid lightslategrey;
+    border-radius: 2%;
+}
+.signup-form{
+    margin: 2%;
+    padding: 2%;
+    border: 2px solid lightslategrey;
+    border-radius: 2%;
+}
