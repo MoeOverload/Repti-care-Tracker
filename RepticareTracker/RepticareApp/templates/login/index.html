@@ -8,22 +8,22 @@
 
 {%block body%}
     <br>
-    {% if message %}
-    <div>{{ message }}</div>
-    {% endif %}
     <br>
         <div class="login-form" id="login-form" >
             <h1 style="text-align: center;">Login</h1>
             <form action="{% url 'Login' %}" method="post">
                 {% csrf_token %}
-                
                 <div class="mb-3 mt-3">
+                    <label for="username" class="form-label">username:</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+                </div>
+                <!--<div class="mb-3 mt-3">
                     <label for="email" class="form-label">Email:</label>
                     <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
-                </div>
+                </div> -->
                 <div class="mb-3">
                     <label for="pwd" class="form-label">Password:</label>
-                    <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd">
+                    <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password">
                 </div>
                 <button type="submit" class="btn btn-primary" value="Login">Log In</button>
             </form> 
@@ -40,7 +40,7 @@
                 </div>
                 <div class="mb-3 mt-3">
                     <label for="username" class="form-label">username:</label>
-                    <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+                    <input type="text" class="form-control" id="username" placeholder="Enter username" name="signup_username">
                 </div>
                 <div class="mb-3">
                     <label for="pwd" class="form-label">Password:</label>

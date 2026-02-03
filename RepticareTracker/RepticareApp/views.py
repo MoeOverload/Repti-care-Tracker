@@ -9,18 +9,16 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile
 # Create your views here.
 def ReptiCareApp(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("Login"))
     return render(request, "home/index.html")
 
 def Login(request):
     if request.method == "POST":
         # Accessing username and password from form data
-        email = request.POST["email"]
+        username = request.POST["username"]
         password = request.POST["password"]
 
         # Check if username and password are correct, returning User object if so
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(request, username=username, password=password)
 
         # If user object is returned, log in and route to index page:
         if user:
@@ -36,7 +34,7 @@ def Login(request):
 def createUser(request):
     if request.method == "POST":
         email = request.POST.get("email")
-        username = request.POST.get("username")
+        username = request.POST.get("signup_username")
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
         if password1 != password2:
@@ -56,8 +54,9 @@ def createUser(request):
     return render(request, "login/index.html")
 
 
-def logout(request):
-    pass
+def logout_view(request):
+    logout(request)
+    return redirect("ReptiCareApp")
 
 
 @login_required

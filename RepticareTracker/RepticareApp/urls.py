@@ -5,6 +5,6 @@ urlpatterns = [
     path("", views.ReptiCareApp, name="ReptiCareApp"),
     path("Login/", views.Login, name="Login"),
     path("signup/", views.createUser, name="signup"),
-    path("logout/", views.logout, name="logout"),
+    path("logout/", views.logout_view, name="logout"),
     path("dashboard/",views.dashboard, name="dashboard")
  ]
