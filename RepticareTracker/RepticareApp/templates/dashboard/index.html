@@ -22,16 +22,31 @@
     </div> 
 </div>
 
+
+
 <div class="offcanvas offcanvas-start" id="Reptiles">
   <div class="offcanvas-header">
     <h1 class="offcanvas-title">Reptiles</h1>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
   </div>
   <div class="offcanvas-body">
-    <p>this space will house the list of reptiles</p>
-    <p>maybe clicking on the reptile "block" will create a popover allowing to add info</p>
+    <ul style="list-style-type: none;">
+      {% for reptile in reptiles%}
+      <li style="margin:1%;">
+        <button type="button" class= "btn btn-primary" data-bs-toggle="modal" data-bs-target="#reptile-{{reptile.id}}">
+        {{reptile}}
+        </button>
+        <br>
+      </li>
+      {%empty%}
+        <li>no reptiles</li>
+      {% endfor %}
+    </ul>
   </div>
 </div>
+
+
+
 <div class="offcanvas offcanvas-start" id="Terrariums">
   <div class="offcanvas-header">
     <h1 class="offcanvas-title">Terrariums</h1>
@@ -42,6 +57,10 @@
     <p>maybe clicking on the reptile "block" will create a popover allowing to add info</p>
   </div>
 </div>
+
+
+
+
 <div class="offcanvas offcanvas-start" id="Feeders">
   <div class="offcanvas-header">
     <h1 class="offcanvas-title">Feeders</h1>
@@ -52,6 +71,35 @@
     <p>maybe clicking on the reptile "block" will create a popover allowing to add info</p>
   </div>
 </div>
+
+
+
+{%for reptile in reptiles%}
+  <!-- The Modal -->
+    <div class="modal fade" id="reptile-{{reptile.id}}" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">{{reptile}}</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <h3>{{reptile.reptile_species}}</h3>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  {%endfor%}
 
     {%block scripts%}
     

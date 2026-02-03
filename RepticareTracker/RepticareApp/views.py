@@ -61,4 +61,9 @@ def logout_view(request):
 
 @login_required
 def dashboard(request):
-    return render(request,"dashboard/index.html")
+    profile = Profile.objects.get(user=request.user)
+    reptiles = profile.reptiles.all() 
+    return render(request,"dashboard/index.html",{
+        "profile":profile,
+        "reptiles": reptiles
+    })
