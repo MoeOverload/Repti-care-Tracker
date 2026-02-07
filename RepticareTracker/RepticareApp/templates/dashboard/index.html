@@ -42,6 +42,8 @@
         <li>no reptiles</li>
       {% endfor %}
     </ul>
+    <br>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReptileModal">Add Reptile</button>
   </div>
 </div>
 
@@ -101,7 +103,36 @@
     </div>
   {%endfor%}
 
+
+
+  <!--Create reptile form modal-->
+  <div class="modal fade" id="addReptileModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="add-reptile-form" data-url="{% url 'add_reptile' %}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title">Add Reptile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          {{ reptile_form.as_p }}
+          <div id="form-errors" class="text-danger"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
     {%block scripts%}
-    
+    <script src="{% static 'ReptiCareApp/js/add_reptile_form.js' %}"></script>
     {%endblock%}
 {%endblock%}

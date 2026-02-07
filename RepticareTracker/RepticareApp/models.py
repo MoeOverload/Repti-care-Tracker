@@ -24,10 +24,11 @@ class Reptile(models.Model):
         on_delete=models.CASCADE,
         related_name="reptiles"  
     )
+    
     reptile_name = models.CharField("reptile name", max_length=30)
     reptile_species = models.CharField("reptile_species", max_length=60)
-    estimated_age_months = models.IntegerField(null=True, blank=True)
-    estimated_age_record_date = models.DateField(null=True, blank=True)
+    estimated_age_months = models.IntegerField("reptile_estimated_age",null=True, blank=True)
+    estimated_age_record_date = models.DateField("reptile_age_record_date",null=True, blank=True)
 
 
     def __str__(self):

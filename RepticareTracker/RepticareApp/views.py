@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse 
+from django.http import HttpResponse , JsonResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from .forms import ReptileForm
 # Create your views here.
 def ReptiCareApp(request):
     return render(request, "home/index.html")
@@ -63,7 +64,26 @@ def logout_view(request):
 def dashboard(request):
     profile = Profile.objects.get(user=request.user)
     reptiles = profile.reptiles.all() 
+    form = ReptileForm()
     return render(request,"dashboard/index.html",{
         "profile":profile,
-        "reptiles": reptiles
+        "reptiles": reptiles,
+        "reptile_form": form
     })
+
+
+def add_reptile(request):
+    if request.method == "POST":
+        form = ReptileForm(request.POST)
+        if form.is_valid():
+            reptile = form.save(commit=False)
+            reptile.owner = request.user.profile
+            reptile.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({
+                "success": False,
+                "errors": form.errors
+            })
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
