@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("add-reptile-form");
+    const form = document.getElementById("add-terrarium-form");
     if (!form) return;
 
     form.addEventListener("submit", function (e) {
@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("form-errors").innerText =
                     data.message || "Error";
             }
-        });
+        })
+        .catch(err => console.error(err));
     });
 });

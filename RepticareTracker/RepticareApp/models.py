@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import date
 # Create your models here.
 
 
@@ -30,7 +31,30 @@ class Reptile(models.Model):
     estimated_age_months = models.IntegerField("reptile_estimated_age",null=True, blank=True)
     estimated_age_record_date = models.DateField("reptile_age_record_date",null=True, blank=True)
 
+    @property
+    def current_age_months(self):
+        if self.estimated_age_months is None or self.estimated_age_record_date is None:
+            return None
 
+        today = date.today()
+        months_passed = (today.year - self.estimated_age_record_date.year) * 12 + (
+            today.month - self.estimated_age_record_date.month
+        )
+
+        return self.estimated_age_months + months_passed
+    @property
+    def age_display(self):
+        months = self.current_age_months
+        if months is None:
+            return "Unknown"
+
+        years = months // 12
+        rem_months = months % 12
+
+        if years:
+            return f"{years}y {rem_months}m"
+        return f"{rem_months}m"
+    
     def __str__(self):
         return self.reptile_name
 

@@ -30,16 +30,25 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
   </div>
   <div class="offcanvas-body">
-    <ul style="list-style-type: none;">
+    <ul class="list-unstyled">
       {% for reptile in reptiles%}
-      <li style="margin:1%;">
-        <button type="button" class= "btn btn-primary" data-bs-toggle="modal" data-bs-target="#reptile-{{reptile.id}}">
-        {{reptile}}
-        </button>
-        <br>
+      <li class="mb-3" id="reptile-card-{{reptile.id}}">
+        <div class="card p-3 border border-success" >
+          <div class="d-flex align-items-center gap-3">
+            
+            <!--will be a photo -->
+            <img class="rounded"style="width:60px;height:60px; object-fit:cover;">
+          
+            <div class="flex-grow-1">
+              <h5 class="mb-1">{{reptile}}</h5>
+            </div>
+            <button type="button" class= "btn btn-primary" data-bs-toggle="modal" data-bs-target="#reptile-{{reptile.id}}">Info</button>
+
+          </div>
+        </div>
       </li>
       {%empty%}
-        <li>no reptiles</li>
+        <li class="text-muted">no reptiles yet</li>
       {% endfor %}
     </ul>
     <br>
@@ -55,8 +64,29 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
   </div>
   <div class="offcanvas-body">
-    <p>this space will house the list of Terrariums</p>
-    <p>maybe clicking on the reptile "block" will create a popover allowing to add info</p>
+    <ul class="list-unstyled">
+      {% for terrarium in terrariums%}
+      <li class="mb-3" id="terrarium-card-{{terrarium.id}}">
+        <div class="card p-3 border border-success" >
+          <div class="d-flex align-items-center gap-3">
+            
+            <!--will be a photo -->
+            <img class="rounded"style="width:60px;height:60px; object-fit:cover;">
+          
+            <div class="flex-grow-1">
+              <h5 class="mb-1">{{terrarium.terrarium_nickname}}</h5>
+            </div>
+            <button type="button" class= "btn btn-primary" data-bs-toggle="modal" data-bs-target="#terrarium-{{terrarium.id}}">Info</button>
+
+          </div>
+        </div>
+      </li>
+      {%empty%}
+        <li class="text-muted">no terrariums yet</li>
+      {% endfor %}
+    </ul>
+    <br>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTerrariumModal">Add Terrarium</button>
   </div>
 </div>
 
@@ -77,7 +107,7 @@
 
 
 {%for reptile in reptiles%}
-  <!-- The Modal -->
+  <!-- reptile info Modal -->
     <div class="modal fade" id="reptile-{{reptile.id}}" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -91,11 +121,16 @@
           <!-- Modal body -->
           <div class="modal-body">
             <h3>{{reptile.reptile_species}}</h3>
+            <p>{{reptile.age_display}}</p>
           </div>
 
           <!-- Modal footer -->
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            <div class="d-flex align-items-center gap-3">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >Close</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reptile_delete_{{reptile.id}}">Delete</button> 
+            </div>
+            
           </div>
 
         </div>
@@ -103,21 +138,67 @@
     </div>
   {%endfor%}
 
-
-
-  <!--Create reptile form modal-->
-  <div class="modal fade" id="addReptileModal" tabindex="-1">
+{%for reptile in reptiles%}
+<!--delete reptile Modal-->
+<div class="modal" id="reptile_delete_{{reptile.id}}">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form id="add-reptile-form" data-url="{% url 'add_reptile' %}">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Are You sure You want to Delete {{reptile.reptile_name}}?</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        This Act Cannot Be Undone
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <div class="d-flex align-items-center gap-3">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
+          <form class="delete_reptile_form" method="post" action="{% url 'delete_reptile' reptile.id %}" data-url="{% url 'delete_reptile' reptile.id%}" data-id="{{reptile.id}}">
+            {% csrf_token%}
+            <button type="submit" class="btn btn-danger delete_reptile_btn" >Yes, Delete</button>
+          </form>
+          
+        </div>
+        <div class="form-errors  text-danger"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{%endfor%}
+
+
+<!--Create reptile form modal-->
+<div class="modal fade" id="addReptileModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form  id="add-reptile-form" method="post" action="{% url 'add_reptile' %}" data-url="{% url 'add_reptile' %}">
         {% csrf_token %}
         <div class="modal-header">
           <h5 class="modal-title">Add Reptile</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
         </div>
 
         <div class="modal-body">
-          {{ reptile_form.as_p }}
+           
+          <div class="mb-3 mt-3">
+            <label for="reptile_name" class="form-label">Name:</label>
+            <input type="text" class="form-control" id="reptile_name" placeholder="Enter Name" name="reptile_name">
+          </div>
+          <div class="mb-3">
+            <label for="reptile_species" class="form-label">Species:</label>
+            <input type="text" class="form-control" id="reptile_species" placeholder="Enter Species" name="reptile_species">
+          </div>
+          <div class="mb-3 mt-3">
+            <label for="estimated_age_months" class="form-label">Age In Months:</label>
+            <input type="number" class="form-control"name="estimated_age_months" min="0" placeholder="Age in months">
+          </div>
           <div id="form-errors" class="text-danger"></div>
         </div>
 
@@ -131,8 +212,115 @@
 
 
 
+<!--Create Terrarium form modal-->
+<div class="modal fade" id="addTerrariumModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form  id="add-terrarium-form" method="post" action="{% url 'add_terrarium' %}" data-url="{% url 'add_terrarium' %}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title">Add Terrarium</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
+        </div>
+
+        <div class="modal-body">
+           
+          <div class="mb-3 mt-3">
+            <label for="terrarium_nickname" class="form-label">Terrarium Nickname:</label>
+            <input type="text" class="form-control" id="terrarium_nickname" placeholder="Enter Terrarium Nickname" name="terrarium_nickname">
+          </div>
+          <div class="mb-3 mt-3">
+            <label for="selected_reptile" class="form-label">Select A Reptile:</label>
+              <select class="form-select" name="reptile_id">
+                <option value="">Select a Reptile</option>
+                {%for reptile in reptiles %}
+                <option value="{{reptile.id}}">{{reptile}}</option>
+                {%endfor%}
+              
+              </select> 
+          </div>
+          <div id="form-errors" class="text-danger"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{%for terrarium in terrariums%}
+  <!-- terrarium info Modal -->
+    <div class="modal fade" id="terrarium-{{terrarium.id}}" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">{{terrarium}}</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <h3>{{terrarium.terrarium_nickname}}</h3>
+            <p> Home To {{terrarium.reptile}}</p>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <div class="d-flex align-items-center gap-3">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >Close</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#terrarium_delete_{{terrarium.id}}">Delete</button> 
+            </div>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+  {%endfor%}
+
+  {%for terrarium in terrariums%}
+<!--delete terrarium Modal-->
+<div class="modal" id="terrarium_delete_{{terrarium.id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Are You sure You want to Delete {{terrarium.terrarium_nickname}}?</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        This Act Cannot Be Undone
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <div class="d-flex align-items-center gap-3">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
+          <form class="delete_terrarium_form" method="post" action="{% url 'delete_terrarium' terrarium.id %}" data-url="{% url 'delete_terrarium' terrarium.id%}" data-id="{{terrarium.id}}">
+            {% csrf_token%}
+            <button type="submit" class="btn btn-danger delete_terrarium_btn" >Yes, Delete</button>
+          </form>
+          
+        </div>
+        <div class="form-errors  text-danger"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{%endfor%}
+
 
     {%block scripts%}
     <script src="{% static 'ReptiCareApp/js/add_reptile_form.js' %}"></script>
+    <script src="{% static 'ReptiCareApp\js\delete_reptile.js'%}"></script>
+    <script src="{% static 'ReptiCareApp/js/add_terrarium.js' %}"></script>
+    <script src="{% static 'ReptiCareApp\js\delete_terrarium.js'%}"></script>
     {%endblock%}
 {%endblock%}
