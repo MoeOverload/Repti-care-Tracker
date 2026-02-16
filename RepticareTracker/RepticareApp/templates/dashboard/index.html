@@ -24,6 +24,9 @@
 
 
 
+
+
+
 <div class="offcanvas offcanvas-start" id="Reptiles">
   <div class="offcanvas-header">
     <h1 class="offcanvas-title">Reptiles</h1>
@@ -55,6 +58,12 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReptileModal">Add Reptile</button>
   </div>
 </div>
+
+
+
+
+
+
 
 
 
@@ -93,16 +102,50 @@
 
 
 
+
+
+
+
+
+<!--feeder info-->
 <div class="offcanvas offcanvas-start" id="Feeders">
   <div class="offcanvas-header">
     <h1 class="offcanvas-title">Feeders</h1>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
   </div>
   <div class="offcanvas-body">
-    <p>this space will house the list of Feeders</p>
-    <p>maybe clicking on the reptile "block" will create a popover allowing to add info</p>
+    <ul class="list-unstyled">
+      {% for feeder in feeders%}
+      <li class="mb-3" id="feeder-card-{{feeder.id}}">
+        <div class="card p-3 border border-success" >
+          <div class="d-flex align-items-center gap-3">
+            
+            <!--will be a photo -->
+            <img class="rounded"style="width:60px;height:60px; object-fit:cover;">
+          
+            <div class="flex-grow-1">
+              <h5 class="mb-1">{{feeder.name}}</h5>
+            </div>
+            <button type="button" class= "btn btn-primary" data-bs-toggle="modal" data-bs-target="#feeder-{{feeder.id}}">Info</button>
+
+          </div>
+        </div>
+      </li>
+      {%empty%}
+        <li class="text-muted">no feeders yet</li>
+      {% endfor %}
+    </ul>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFeederModal">Add feeder</button>
   </div>
+
 </div>
+
+
+
+
+
+
+
 
 
 
@@ -136,7 +179,13 @@
         </div>
       </div>
     </div>
-  {%endfor%}
+{%endfor%}
+
+
+
+
+
+
 
 {%for reptile in reptiles%}
 <!--delete reptile Modal-->
@@ -172,6 +221,14 @@
   </div>
 </div>
 {%endfor%}
+
+
+
+
+
+
+
+
 
 
 <!--Create reptile form modal-->
@@ -212,6 +269,12 @@
 
 
 
+
+
+
+
+
+
 <!--Create Terrarium form modal-->
 <div class="modal fade" id="addTerrariumModal" tabindex="-1">
   <div class="modal-dialog">
@@ -249,6 +312,20 @@
   </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {%for terrarium in terrariums%}
   <!-- terrarium info Modal -->
     <div class="modal fade" id="terrarium-{{terrarium.id}}" tabindex="-1">
@@ -257,13 +334,13 @@
 
           <!-- Modal Header -->
           <div class="modal-header">
-            <h4 class="modal-title">{{terrarium}}</h4>
+            <h4 class="modal-title">{{terrarium.terrarium_nickname}}</h4>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
 
           <!-- Modal body -->
           <div class="modal-body">
-            <h3>{{terrarium.terrarium_nickname}}</h3>
+            
             <p> Home To {{terrarium.reptile}}</p>
           </div>
 
@@ -279,9 +356,20 @@
         </div>
       </div>
     </div>
-  {%endfor%}
+{%endfor%}
 
-  {%for terrarium in terrariums%}
+
+
+
+
+
+
+
+
+
+
+
+{%for terrarium in terrariums%}
 <!--delete terrarium Modal-->
 <div class="modal" id="terrarium_delete_{{terrarium.id}}">
   <div class="modal-dialog">
@@ -317,10 +405,119 @@
 {%endfor%}
 
 
+
+<!--feeder info modal-->
+{%for feeder in feeders%}
+  <!-- reptile info Modal -->
+    <div class="modal fade" id="feeder-{{feeder.id}}" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">{{feeder.name}}</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <h3>TODO: Will Be Number of feeders</h3>
+            
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <div class="d-flex align-items-center gap-3">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >Close</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#feeder_delete_{{feeder.id}}">Delete</button> 
+            </div>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+{%endfor%}
+
+
+
+
+{%for feeder in feeders%}
+<!--delete terrarium Modal-->
+<div class="modal" id="feeder_delete_{{feeder.id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Are You sure You want to Delete {{feeder.name}}?</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        This Act Cannot Be Undone
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <div class="d-flex align-items-center gap-3">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">back</button>
+          <form class="delete_feeder_form" method="post" action="{% url 'delete_feeder' feeder.id %}" data-url="{% url 'delete_feeder' feeder.id%}" data-id="{{feeder.id}}">
+            {% csrf_token%}
+            <button type="submit" class="btn btn-danger delete_feeder_btn" >Yes, Delete</button>
+          </form>
+          
+        </div>
+        <div class="form-errors  text-danger"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{%endfor%}
+
+
+
+<!--Create feeder form modal-->
+<div class="modal fade" id="addFeederModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form  id="add-feeder-form" method="post" action="{% url 'add_feeder' %}" data-url="{% url 'add_feeder' %}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title">Add Feeder</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
+        </div>
+
+        <div class="modal-body">
+           
+          <div class="mb-3 mt-3">
+            <label for="feeder_name" class="form-label">Name:</label>
+            <input type="text" class="form-control" id="feeder_name" placeholder="Enter Name" name="feeder_name">
+          </div>
+          <div id="form-errors" class="text-danger"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
     {%block scripts%}
     <script src="{% static 'ReptiCareApp/js/add_reptile_form.js' %}"></script>
     <script src="{% static 'ReptiCareApp\js\delete_reptile.js'%}"></script>
     <script src="{% static 'ReptiCareApp/js/add_terrarium.js' %}"></script>
     <script src="{% static 'ReptiCareApp\js\delete_terrarium.js'%}"></script>
+    <script src="{% static 'ReptiCareApp/js/add_feeder_form.js' %}"></script>
+    <script src="{% static 'ReptiCareApp\js\delete_feeder.js'%}"></script>
     {%endblock%}
 {%endblock%}

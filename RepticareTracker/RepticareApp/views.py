@@ -6,12 +6,21 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Reptile, Terrarium
+from .models import Profile, Reptile, Terrarium, FeederType
 from django.utils.timezone import now
 from django.shortcuts import get_object_or_404
 # Create your views here.
+
+
+
+
 def ReptiCareApp(request):
     return render(request, "home/index.html")
+
+
+
+
+
 
 def Login(request):
     if request.method == "POST":
@@ -32,6 +41,12 @@ def Login(request):
                 "message": "Invalid Credentials"
             })
     return render(request, "login/index.html")
+
+
+
+
+
+
 
 def createUser(request):
     if request.method == "POST":
@@ -56,9 +71,20 @@ def createUser(request):
     return render(request, "login/index.html")
 
 
+
+
+
+
+
+
 def logout_view(request):
     logout(request)
     return redirect("ReptiCareApp")
+
+
+
+
+
 
 
 @login_required
@@ -66,12 +92,19 @@ def dashboard(request):
     profile = Profile.objects.get(user=request.user)
     reptiles = profile.reptiles.all() 
     terrariums = profile.terrariums.all()
+    feeders = profile.feeders.all()
     return render(request,"dashboard/index.html",{
         "profile":profile,
         "reptiles": reptiles,
         "terrariums": terrariums,
+        "feeders": feeders,
         
     })
+
+
+
+
+
 
 
 def add_reptile(request):
@@ -104,7 +137,14 @@ def add_reptile(request):
     )
     
     return JsonResponse({"success": True})
-        
+
+
+
+
+
+
+
+
 def delete_reptile(request,reptile_id):
     if request.method != "POST":
         return JsonResponse({"success": False}, status=400)
@@ -115,6 +155,13 @@ def delete_reptile(request,reptile_id):
     )
     reptile.delete()
     return JsonResponse({"success":True})
+
+
+
+
+
+
+
 
 def add_terrarium(request):
     if request.method != "POST":
@@ -135,6 +182,13 @@ def add_terrarium(request):
     )
     return JsonResponse({"success": True})
 
+
+
+
+
+
+
+
 def delete_terrarium(request,terrarium_id):
     if request.method != "POST":
         return JsonResponse({"success": False}, status=400)
@@ -144,4 +198,35 @@ def delete_terrarium(request,terrarium_id):
         owner__user = request.user
     )
     terrarium.delete()
+    return JsonResponse({"success":True})
+
+
+
+def add_feeder(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request"}, status=400)
+    owner = Profile.objects.get(user=request.user)
+    name = request.POST.get("feeder_name")
+    if not name:
+         return JsonResponse({
+            "success": False,
+            "message": "missing fields"
+            }, status=400)
+    
+    FeederType.objects.create(
+        owner = owner,
+        name = name
+    )
+    return JsonResponse({"success": True})
+
+
+def delete_feeder(request,feeder_id):
+    if request.method != "POST":
+        return JsonResponse({"success": False}, status=400)
+    feeder = get_object_or_404(
+        FeederType,
+        id=feeder_id,
+        owner__user = request.user
+    )
+    feeder.delete()
     return JsonResponse({"success":True})

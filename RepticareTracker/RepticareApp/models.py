@@ -76,6 +76,12 @@ class Terrarium(models.Model):
 
 #food model
 class FeederType(models.Model):
+    owner = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name="feeders",
+        null=True
+    )
     name = models.CharField(max_length=60)
     species = models.CharField(max_length=60, blank=True)
     default_unit = models.CharField(

@@ -11,4 +11,6 @@ urlpatterns = [
     path("reptile/delete/<int:reptile_id>/", views.delete_reptile, name="delete_reptile"),
     path("terrariums/add/", views.add_terrarium, name="add_terrarium"),
     path("terrarium/delete/<int:terrarium_id>/" ,views.delete_terrarium, name="delete_terrarium"),
+    path("feeder/add/", views.add_feeder, name="add_feeder"),
+    path("feeder/delete/<int:feeder_id>/", views.delete_feeder, name="delete_feeder"),
  ]
