@@ -21,11 +21,9 @@
         <button type="button" class="btn btn-outline-primary" data-bs-toggle="offcanvas" data-bs-target="#Feeders">Feeders</button>
     </div> 
 </div>
+<br>
 
-
-
-
-
+<!--#######################################REPTILE OFFCANVAS LIST##############################################################-->
 
 <div class="offcanvas offcanvas-start" id="Reptiles">
   <div class="offcanvas-header">
@@ -58,14 +56,13 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReptileModal">Add Reptile</button>
   </div>
 </div>
+<!--###########################################################################################################-->
 
 
 
 
 
-
-
-
+<!--#################################TERRARIUM OFFCANVAS#######################################################-->
 
 <div class="offcanvas offcanvas-start" id="Terrariums">
   <div class="offcanvas-header">
@@ -98,16 +95,14 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTerrariumModal">Add Terrarium</button>
   </div>
 </div>
+<!--###########################################################################################################################-->
 
 
 
 
 
 
-
-
-
-<!--feeder info-->
+<!--################################################FEEDER OFFCANVAS###########################################################-->
 <div class="offcanvas offcanvas-start" id="Feeders">
   <div class="offcanvas-header">
     <h1 class="offcanvas-title">Feeders</h1>
@@ -139,14 +134,13 @@
   </div>
 
 </div>
+<!--########################################################################################################################-->
 
 
 
 
 
-
-
-
+<!--############REPTILE LIST MODAL#######################################################################################-->
 
 
 {%for reptile in reptiles%}
@@ -180,11 +174,6 @@
       </div>
     </div>
 {%endfor%}
-
-
-
-
-
 
 
 {%for reptile in reptiles%}
@@ -224,13 +213,6 @@
 
 
 
-
-
-
-
-
-
-
 <!--Create reptile form modal-->
 <div class="modal fade" id="addReptileModal" tabindex="-1">
   <div class="modal-dialog">
@@ -266,14 +248,14 @@
     </div>
   </div>
 </div>
+<!--#######################################################################################################-->
 
 
 
 
 
 
-
-
+<!--###########################TERRARIUM LIST MODAL########################################################-->
 
 <!--Create Terrarium form modal-->
 <div class="modal fade" id="addTerrariumModal" tabindex="-1">
@@ -314,18 +296,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 {%for terrarium in terrariums%}
   <!-- terrarium info Modal -->
     <div class="modal fade" id="terrarium-{{terrarium.id}}" tabindex="-1">
@@ -357,16 +327,6 @@
       </div>
     </div>
 {%endfor%}
-
-
-
-
-
-
-
-
-
-
 
 
 {%for terrarium in terrariums%}
@@ -403,12 +363,18 @@
   </div>
 </div>
 {%endfor%}
+<!--####################################################################################################################-->
 
 
 
-<!--feeder info modal-->
+
+
+
+
+
+<!--############################################################feeder info modal#############################################-->
 {%for feeder in feeders%}
-  <!-- reptile info Modal -->
+  <!-- feeder info Modal -->
     <div class="modal fade" id="feeder-{{feeder.id}}" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -438,9 +404,6 @@
       </div>
     </div>
 {%endfor%}
-
-
-
 
 {%for feeder in feeders%}
 <!--delete terrarium Modal-->
@@ -477,8 +440,6 @@
 </div>
 {%endfor%}
 
-
-
 <!--Create feeder form modal-->
 <div class="modal fade" id="addFeederModal" tabindex="-1">
   <div class="modal-dialog">
@@ -506,7 +467,7 @@
     </div>
   </div>
 </div>
-
+<!--########################################################################################################################-->
 
 
 
